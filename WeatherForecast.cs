@@ -1,6 +1,6 @@
 using System;
 
-namespace MUGH
+namespace aspnetcorereactspa
 {
     public class WeatherForecast
     {

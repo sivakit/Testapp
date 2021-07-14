@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace MUGH.Controllers
+namespace aspnetcorereactspa.Controllers
 {
     [ApiController]
     [Route("[controller]")]
