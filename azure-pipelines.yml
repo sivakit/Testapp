@@ -1,28 +1,32 @@
-# ASP.NET Core
-# Build and test ASP.NET Core projects targeting .NET Core.
-# Add steps that run tests, create a NuGet package, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+name: '$(Date:yyyyMMdd).$(Rev:r)'
 
 trigger:
-- master
-
-pool:
-  vmImage: 'ubuntu-latest'
+- main
 
 variables:
   buildConfiguration: 'Release'
 
-steps:
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'publish'
-    publishWebProjects: false
-    projects: 'aspnetcorereactspa.csproj'
-    arguments: '--configuration $(buildConfiguration) --output $(Build.BinariesDirectory)/$(Build.BuildId)'
-    modifyOutputPath: false
+pool:
+  name: 'Self Agent'
 
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.BinariesDirectory)/$(Build.BuildId)'
-    ArtifactName: 'drop-$(Build.BuildId)'
-    publishLocation: 'Container'
+stages:
+  - stage: Build
+    displayName: Build testapp
+    dependsOn:
+    jobs:
+    - job: Build
+      displayName: 'Build testapp'
+      steps: 
+      - task: DotNetCoreCLI@2
+        inputs:
+          command: 'publish'
+          publishWebProjects: false
+          projects: 'aspnetcorereactspa.csproj'
+          arguments: '--configuration $(buildConfiguration) --output $(Build.BinariesDirectory)/$(Build.BuildId)'
+          modifyOutputPath: false
+      
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: '$(Build.BinariesDirectory)/$(Build.BuildId)'
+          ArtifactName: 'drop-$(Build.BuildId)'
+          publishLocation: 'Container'
